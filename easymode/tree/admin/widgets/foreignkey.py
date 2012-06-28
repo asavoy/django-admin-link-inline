@@ -12,6 +12,7 @@ from django.utils.html import mark_safe
 from django.utils.translation import ugettext
 
 from easymode.utils.languagecode import strip_language_code
+from easymode.utils.template import get_admin_media_prefix
 
 __all__ = ('RenderLink', 'LinkWidget')
 
@@ -74,7 +75,6 @@ class LinkWidget(widgets.TextInput):
             'name':self.name,
             'value':self.value,
             'description': ugettext('Change'),
-            'ADMIN_MEDIA_PREFIX':settings.ADMIN_MEDIA_PREFIX,
         }
         
         context.update(self.attrs)

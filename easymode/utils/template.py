@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.template import TemplateDoesNotExist
 from django.template.loader import template_source_loaders, find_template_loader
@@ -23,3 +24,17 @@ def find_template_path(name):
         except TemplateDoesNotExist:
             pass
     raise TemplateDoesNotExist(name)
+
+def get_admin_media_prefix():
+    """
+    Returns path prefix for admin assets consistently, even in Django 1.4+
+    where `ADMIN_MEDIA_PREFIX` is deprecated.
+
+    NOTE: This is generated directly from the settings module, instead
+    of looking in the TemplateContext, which skips template context
+    processors.
+    """
+    if hasattr(settings, 'ADMIN_MEDIA_PREFIX'):
+        return settings.ADMIN_MEDIA_PREFIX
+
+    return os.path.join(getattr(settings, 'STATIC_URL'), 'admin/')

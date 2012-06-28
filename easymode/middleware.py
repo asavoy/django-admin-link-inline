@@ -5,14 +5,15 @@ from django.conf import settings
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.middleware.locale import LocaleMiddleware
 from django.utils import translation
-from django.utils.http import cookie_date
+from django.utils.http import cookie_dateimport cookie_date
 
 from easymode.utils.languagecode import get_short_language_codes,\
     get_language_code_from_shorthand,\
     get_shorthand_from_language_code as language_as_slug
-
+from easymode.utils.template import get_admin_media_prefix
 
 USE_SHORT_LANGUAGE_CODES = getattr(settings, 'USE_SHORT_LANGUAGE_CODES', False)
+admin_media_prefix = get_admin_media_prefix()
 
 ################################################################################
 # Compiled regular expressions
@@ -27,30 +28,30 @@ if USE_SHORT_LANGUAGE_CODES:
     HREF_REGEX = re.compile(
         ur'<a([^>]+)href="/(?!(%s|%s|%s))([^"]*)"([^>]*)>' % (
             "|".join(map(lambda l: l + "/" , get_short_language_codes())), 
-            settings.MEDIA_URL[1:], 
-            settings.ADMIN_MEDIA_PREFIX[1:]
+            settings.MEDIA_URL[1:],
+            admin_media_prefix[1:]
         )
     )
     FORM_REGEX = re.compile(
         ur'<form([^>]+)action="/(?!(%s|%s|%s))([^"]*)"([^>]*)>' % (
             "|".join(map(lambda l: l + "/" , get_short_language_codes())),
              settings.MEDIA_URL[1:],
-             settings.ADMIN_MEDIA_PREFIX[1:]
+             admin_media_prefix[1:]
         )
     )
 else:
     HREF_REGEX = re.compile(
         ur'<a([^>]+)href="/(?!(%s|%s|%s))([^"]*)"([^>]*)>' % (
             "|".join(map(lambda l: l[0] + "/" , settings.LANGUAGES)), 
-            settings.MEDIA_URL[1:], 
-            settings.ADMIN_MEDIA_PREFIX[1:]
+            settings.MEDIA_URL[1:],
+            admin_media_prefix[1:]
         )
     )
     FORM_REGEX = re.compile(
         ur'<form([^>]+)action="/(?!(%s|%s|%s))([^"]*)"([^>]*)>' % (
             "|".join(map(lambda l: l[0] + "/" , settings.LANGUAGES)),
              settings.MEDIA_URL[1:],
-             settings.ADMIN_MEDIA_PREFIX[1:]
+             admin_media_prefix[1:]
         )
     )
 
@@ -154,7 +155,7 @@ class LocaliseUrlsMiddleware(object):
         path = unicode(request.path)
 
         if not path.startswith(settings.MEDIA_URL) and \
-            not path.startswith(settings.ADMIN_MEDIA_PREFIX) and \
+            not path.startswith(admin_media_prefix) and \
             response.status_code == 200 and \
             response._headers['content-type'][1].split(';')[0] == "text/html":
                 
@@ -170,7 +171,7 @@ class LocaliseUrlsMiddleware(object):
             prefix = has_lang_prefix(location[1])
             if not prefix and location[1].startswith("/") and \
                not location[1].startswith(settings.MEDIA_URL) and \
-               not location[1].startswith(settings.ADMIN_MEDIA_PREFIX):
+               not location[1].startswith(admin_media_prefix):
                 response._headers['location'] = (
                     location[0], "/%s%s" % (
                         language_as_slug(request.LANGUAGE_CODE), location[1]
