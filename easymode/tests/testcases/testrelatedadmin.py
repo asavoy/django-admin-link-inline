@@ -7,7 +7,7 @@ from easymode.utils.languagecode import fix_language_code
 
 
 ADD_BUTTON = """<a href="%s" class="add-another" onclick="return showAddAnotherPopup(this);">
-    <img src="/admin/media/img/admin/icon_addlink.gif" width="10" height="10" """
+    <img src="/media/admin/img/icon_addlink.gif" width="10" height="10" """
 
 __all__ = ('TestRelatedAdmin',)
 
