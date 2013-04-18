@@ -126,7 +126,7 @@ class ForeignKeyAwareModelAdmin(AdminBase, _CanFindParentLink):
 
     class Media:
         js = (
-            'easymode/js/adminoverride.js',
+            'adminlinkinline/js/adminoverride.js',
         )
 
     def get_model_perms(self, request):
@@ -186,7 +186,7 @@ class ForeignKeyAwareModelAdmin(AdminBase, _CanFindParentLink):
 class InvisibleModelAdmin(AdminBase, _CanFindParentLink):
     """
     An admin class that can be used as admin for children
-    of :class:`~easymode.tree.admin.relation.ForeignKeyAwareModelAdmin`. 
+    of :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
     
     This way they will be hidden in 
     the admin interface so they can only be accessed via ``ForeignKeyAwareModelAdmin``.
@@ -194,7 +194,7 @@ class InvisibleModelAdmin(AdminBase, _CanFindParentLink):
         
         from django.db import models
         from django.contrib import admin
-        from easymode.tree.admin.relation import *
+        from adminlinkinline.tree.admin.relation import *
         
         class Bar(models.Model):
             foo = models.ForeignKey(Foo, related_name='bars')
@@ -208,7 +208,7 @@ class InvisibleModelAdmin(AdminBase, _CanFindParentLink):
         
     .. attribute:: parent_link
         
-        When :class:`~easymode.tree.admin.relation.InvisibleModelAdmin` is used, it is nolonger
+        When :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin` is used, it is nolonger
         displayed in the admin listing as an editable model. To have sane breadcrumbs
         and make the save button return to the parent instead of the app listing, the
         ``parent_link`` should be set.
