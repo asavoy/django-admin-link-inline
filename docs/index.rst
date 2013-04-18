@@ -42,15 +42,3 @@ are using.
 
 - polib
 - django-reversion
-
-
-Api docs
-========
-
-.. toctree::
-    :maxdepth: 2
-
-
-    tree/api
-    fields
-    debug

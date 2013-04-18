@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# django-easymode documentation build configuration file, created by
+# django-adminlinkinline documentation build configuration file, created by
 # sphinx-quickstart on Thu Dec 31 10:16:20 2009.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -37,7 +37,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'django-easymode'
+project = u'django-adminlinkinline'
 copyright = u'2009, Lars van de Kerkhof'
 
 f = open('../setup.py').read()
@@ -160,7 +160,7 @@ html_show_sourcelink = False
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-easymodedoc'
+htmlhelp_basename = 'django-adminlinkinlinedoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -174,7 +174,7 @@ htmlhelp_basename = 'django-easymodedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'django-easymode.tex', u'django-easymode Documentation',
+  ('index', 'django-adminlinkinline.tex', u'django-adminlinkinline Documentation',
    u'Lars van de Kerkhof', 'manual'),
 ]
 
