@@ -4,18 +4,10 @@ import re
 from distutils.core import setup
 from distutils.command.install import INSTALL_SCHEMES
 
-description="""With easymode you can create backends for dynamic flash/flex
-websites.Easymode makes internationalization simple and outputs xml by
-default. To tailor the xml to your application, you can transform
-it using xslt templates, which easymode integrates.
+description="""AdminLinkInline to allow related models to be linked in with
+parent models in the admin section"""
 
-For more info, look at http://packages.python.org/django-easymode/details.html
-
-documentation at http://packages.python.org/django-easymode/
-
-release notes at http://packages.python.org/django-easymode/changes.html"""
-
-version = '1.0b1'
+version = '1.0'
 packages = []
 data_files = []
 
@@ -38,7 +30,8 @@ def fullsplit(path, result=None):
 
 PYC = re.compile(r'.*\.py[co]$')
 
-for dirpath, dirnames, filenames in os.walk('easymode'):
+for dirpath, dirnames, filenames in os.walk('adminlinkinline'):
+    print dirpath, dirnames, filenames
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
         if dirname.startswith('.'): del dirnames[i]
@@ -49,33 +42,32 @@ for dirpath, dirnames, filenames in os.walk('easymode'):
             [os.path.join(dirpath, f) for f in filenames if not PYC.match(f)]
         ])
 
-setup(name='django-easymode',
-    version=version,
-    description='Quickly build backends for flash/flex websites with django',
-    author='L. van de Kerkhof',
-    author_email='easymode@librelist.com',
-    maintainer='L. van de Kerkhof',
-    maintainer_email='easymode@librelist.com',
-    keywords='adobe flex flash xml xslt i18n internationalization translate',
-    long_description=description,
-    url='http://github.com/LUKKIEN/django-easymode',
-    packages=packages,
-    data_files=data_files,
-    platforms = "any",
-    license='GPL',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Console',
-        'Environment :: Web Environment',
-        'Framework :: Django',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: POSIX',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Internet :: WWW/HTTP :: Site Management',
-        'Topic :: Software Development :: Localization',
-    ],
-)
+
+setup(name='adminlinkinline',
+      version=version,
+      description='Show related models through parent model in admin section',
+      author='L. van de Kerkhof',
+      author_email='easymode@librelist.com',
+      maintainer='Mathspace',
+      keywords='admin link inline django related models',
+      long_description=description,
+      packages=packages,
+      data_files=data_files,
+      platforms = "any",
+      license='GPL',
+      classifiers=[
+          'Development Status :: 4 - Beta',
+          'Environment :: Console',
+          'Environment :: Web Environment',
+          'Framework :: Django',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
+          'Operating System :: MacOS :: MacOS X',
+          'Operating System :: POSIX',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2.6',
+          'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+          'Topic :: Internet :: WWW/HTTP :: Site Management',
+          'Topic :: Software Development :: Localization',
+          ],
+      )

@@ -1,151 +1,44 @@
-Easymode : toolkit for making xml based flash websites
+AdminLinkInline
 ======================================================
 
-With easymode you can create backends for dynamic flash/flex websites.
-Easymode makes internationalization simple and outputs xml by
-default. To tailor the xml to your application, you can transform
-it using xslt templates, which easymode integrates.
-
-For more info, look at :ref:`solipsism`
+With AdminLinkInline you can link a model to related models through foreign key
 
 Manual
 ======
 
 .. toctree::
     :maxdepth: 1
-   
-    changes
-    i18n/index
-    i18n/translation
-    xslt/index
-    tree/index
-    settings
-    commands
-    templatetags
-    Middlewares <middleware.rst>
-    xslt/helpers
 
-The best way to learn how easymode works, is to read the above topics in sequence
-and then look at the :ref:`example_app`. If you have questions please send them
-to the mailing list at easymode@librelist.com.
+    tree/index
+
 
 Installation
 ============
 
-You can download easymode from:
+You can download AdminLinkInline from:
 
-http://github.com/specialunderwear/django-easymode/downloads/
+https://github.com/asavoy/django-admin-link-inline/
 
 Or you can do:
 
-- ``pip install django-easymode``
-
-Or:
-
-- ``pip install -e git://github.com/specialunderwear/django-easymode.git#egg=easymode``
+- ``pip install -e git://github.com/asavoy/django-admin-link-inline.git#egg=linkadmin``
 
 Note the version number in the top left corner and use:
 
-- ``easy_install http://github.com/specialunderwear/django-easymode/tarball/[VERSION]``
+- ``easy_install http://github.com/asavoy/django-admin-link-inline.git/tarball/[VERSION]``
 
-Which, if the version was v0.1.0 would become http://github.com/specialunderwear/django-easymode/tarball/v0.1.0.
-
-.. _example_app:
-
-If you want to use easymode's xslt fascilities, make sure to install either
-`lxml <http://codespeak.net/lxml/>`_ or 
-`libxslt <http://xmlsoft.org/XSLT/python.html>`_.
+Which, if the version was v0.1.0 would become http://github.com/asavoy/django-admin-link-inline/tarball/v0.1.0.
 
 
 Requirements
 ============
 
-Easymode requires python 2.6, furthermore the following packages must be installed:
+AdminLinkInline requires python 2.6, furthermore the following packages must be installed:
 
 - Django
 
 The following packages might also be required, depending on what features you
 are using.
 
-- lxml
 - polib
 - django-reversion
-
-
-Example
-=======
-
-Easymode comes with an example app which is available from github:
-
-http://github.com/specialunderwear/django-easymode/
-
-To run the example app, you must clone the repository, install the dependencies
-and initialize the database::
-
-    git clone http://github.com/specialunderwear/django-easymode.git
-    cd django-easymode
-    pip install -r requirements.txt
-    cd example
-    python manage.py syncdb
-    python manage.py loaddata example_data.xml
-    python manage.py runserver
-    open http://127.0.0.1:8000/
-    
-Unsupported django features
-===========================
-
-The following features, which django supports, are not supported by easymode:
-
-- :attr:`~django.db.models.Options.unique_together`
-- :attr:`~django.db.models.Field.unique_for_date`, :attr:`~django.db.models.Field.unique_for_month`,
-  :attr:`~django.db.models.Field.unique_for_year`
-- :attr:`django.contrib.admin.ModelAdmin.fields`, use :attr:`django.contrib.admin.ModelAdmin.fieldsets` instead.
-- Inheritance for models is restricted to :attr:`~django.db.models.Options.abstract` base classes. 
-  This is a direct result of the fact that :class:`~django.db.models.OneToOneField` are *not* supported by
-  the serializer.
-- :attr:`django.contrib.admin.ModelAdmin.prepopulated_fields` is not supported.
-- You can not use fields marked for translation with
-  :class:`~easymode.i18n.decorators.I18n` in the ``ordering`` attribute of a model's
-  Meta options.
-- Unfortunately, the new template loaders are not supported with xslt templates. Please use the
-  old, deprecated ones like
-  
-  - :func:`django.template.loaders.app_directories.load_template_source`
-  - :func:`django.template.loaders.filesystem.load_template_source`
- 
-Most these features are not supported because the ammount of work to have them
-was greater than the benefit of having them. However, it could also be that I
-just `didn't need it yet <http://c2.com/xp/YouArentGonnaNeedIt.html>`_.
-
-Actionscript bindings
-=====================
-
-If you are developing flex or flash sites with easymode, you are invited to try
-out the new actionscript bindings at
-
-http://github.com/specialunderwear/robotlegs-dungdungdung
-
-These integrate object creation and databinding for easymode's xml output.
-
-Api docs
-========
-
-.. toctree::
-    :maxdepth: 2
-
-    api
-    i18n/api
-    tree/api
-    xslt/api
-    utils/api
-    fields
-    debug    
-
-Version naming convention
--------------------------
-
-* Each update to the development status will increase the first digit. (eg beta or alpha or production ready)
-* Each new feature will increase the second digit.
-* Each bugfix or refactor will increase the last digit
-* An update to a 'big' digit, resets the 'smaller' digits.
-

@@ -29,7 +29,7 @@ help:
 	@echo "  changes   to make an overview of all changed/added/deprecated items"
 	@echo "  linkcheck to check all external links for integrity"
 	@echo "  doctest   to run all doctests embedded in the documentation (if enabled)"
-	@echo "  deploy    to deploy to easymode.permanentmarkers.nl"
+	@echo "  deploy    to deploy to adminlinkinline.permanentmarkers.nl"
     
 clean:
 	-rm -rf $(BUILDDIR)/*
@@ -65,9 +65,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/django-easymode.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/django-adminlinkinline.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/django-easymode.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/django-adminlinkinline.qhc"
 
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
@@ -93,7 +93,7 @@ doctest:
 	      "results in $(BUILDDIR)/doctest/output.txt."
 
 deploy:
-	rsync -avz _build/html/ hiergebeurthet:public_html/easymode/
+	rsync -avz _build/html/ hiergebeurthet:public_html/adminlinkinline/
 
 zip: html
 	cd _build/html && zip -r docs *

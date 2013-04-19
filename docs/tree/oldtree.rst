@@ -3,23 +3,13 @@
 Admin support for model trees with more than 2 levels of related items (deprecated)
 ===================================================================================
 
-.. note::
-    
-    This is the documentation for the **OLD** tree, which is deprecated. for the
-    docs on the new tree, see :ref:`tree_explanation`.
-
-Easymode has full admin support. Since content easymode was designed to handle
-is heavy hierarchic, easymode can also support this in the admin.
-
 The single most annoying problem you will encounter when building django apps,
 is that after you discovered the niceties of 
 :attr:`~django.contrib.admin.ModelAdmin.inlines`, you find out that only
 1 level of :attr:`~django.contrib.admin.ModelAdmin.inlines`
 is supported. It does not support any form of recursion.
 
-Easymode can not make 
-`InlineModelAdmin <http://docs.djangoproject.com/en/dev/ref/contrib/admin/#inlinemodeladmin-objects>`_ 
-recursive either, because that would become
+AdminLinkInline can not make recursive either, because that would become
 a mess. What is *can* do, is display links to all related models. This way you have
 them in reach where you need them. There is no need to go back to the admin and
 select a different section to edit the related models.
@@ -37,9 +27,9 @@ which points to the current ``Foo`` object. Clicking them will let you edit them
 Implementing the tree
 ---------------------
 
-To implement the tree first of all, you have to ensure that ``easymode`` comes
+To implement the tree first of all, you have to ensure that ``adminlinkinline`` comes
 before ``django.contrib.admin`` in the ``INSTALLED_APPS`` section of your settings
-file. This is because easymode needs to override the `admin/index.html` template.
+file. This is because adminlinkinline needs to override the `admin/index.html` template.
 Since the related items that point to ``Foo`` can now be accessed from the ``foo``
 change_view, it is nolonger needed that ``Bar`` is displayed in editable models list
 of the ``Foobar`` app. Just like
@@ -51,15 +41,14 @@ models to be excluded from the app list.
 
 This is how we want the ``Foobar`` app listing to look, with ``Foo`` visible and
 ``Bar`` excluded from the listing. In fact, that is what you can do with the
-:class:`~django.contrib.admin.ModelAdmin` classes inside :mod:`easymode.tree.admin.relation`, as long as
-you make sure that the `admin/index.html` template is read from the :mod:`easymode`
+:class:`~django.contrib.admin.ModelAdmin` classes inside :mod:`adminlinkinline.tree.admin.relation`, as long as
+you make sure that the `admin/index.html` template is read from the :mod:`adminlinkinline`
 templates folder.
 
 This is how the admin is defined to get the screenshots::
 
     from django.contrib import admin
-    from easymode.i18n.admin.decorators import L10n
-    from easymode.tree.admin.relation import *
+    from adminlinkinline.tree.admin.relation import *
 
     from foobar.models import Foo, Bar
 
@@ -86,10 +75,10 @@ This is how the admin is defined to get the screenshots::
     admin.site.register(Bar, BarAdmin)
 
 As you can see the ``ModelAdmin`` classes used are 
-:class:`~easymode.tree.admin.relation.InvisibleModelAdmin` and
-:class:`~easymode.tree.admin.relation.ForeignKeyAwareModelAdmin`.
+:class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin` and
+:class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
 
-:class:`~easymode.tree.admin.relation.ForeignKeyAwareModelAdmin` is aware
+:class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin` is aware
 of the models that have a ``ForeignKey`` pointing to the model which it
 makes editable. 
 
@@ -99,12 +88,12 @@ this! In fact it will make you aware as well, because it will display
 all the related ``Bar`` models in ``Foo``'s :func:`~django.contrib.admin.ModelAdmin.change_view`.
 
 As said we'd like to have ``Bar`` be invisible in the ``Foobar`` app listing.
-That is where :class:`~easymode.tree.admin.relation.InvisibleModelAdmin`
-comes into play. Using :class:`~easymode.tree.admin.relation.InvisibleModelAdmin`
+That is where :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin`
+comes into play. Using :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin`
 instead of a normal :class:`~django.contrib.admin.ModelAdmin` will hide the model from the app listing.
 
-You could even use a :class:`~easymode.tree.admin.relation.ForeignKeyAwareModelAdmin`
-in place of the :class:`~easymode.tree.admin.relation.InvisibleModelAdmin`
+You could even use a :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`
+in place of the :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin`
 because it can be made invisible as well. Using these 2 :class:`~django.contrib.admin.ModelAdmin` classes,
 mixed with regular
 `InlineModelAdmin <http://docs.djangoproject.com/en/dev/ref/contrib/admin/#inlinemodeladmin-objects>`_

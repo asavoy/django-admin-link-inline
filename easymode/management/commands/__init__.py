@@ -1,1 +1,0 @@
-__all__ = ('easy_copy_language', 'easy_locale', 'easy_reset_language')
