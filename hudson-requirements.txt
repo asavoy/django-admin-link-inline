@@ -1,5 +1,0 @@
-coverage==3.3
-nose
-git+git://github.com/cmheisel/nose-xcover.git#egg=nosexcover
-git+git://github.com/jbalogh/django-nose.git#egg=django-nose
-pylint
