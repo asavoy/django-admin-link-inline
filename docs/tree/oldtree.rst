@@ -56,8 +56,7 @@ This is how the admin is defined to get the screenshots::
     class FooAdmin(ForeignKeyAwareModelAdmin):
         """Admin class for the Foo model"""
         model = Foo
-        invisible_in_admin = False
-    
+
         fieldsets = (
             (None, {
                 'fields': ('bar', 'barstool')

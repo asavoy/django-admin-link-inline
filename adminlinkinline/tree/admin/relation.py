@@ -22,8 +22,7 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
         
         class SomeAdmin(ForeignKeyAwareModelAdmin):
             children = [SomeModelThatPointsToUs, AnotherModelThatPointsTous]
-            invisible_in_admin = False
-        
+
         admin.site.register(SomeModelWithLotsOfRelations, SomeAdmin)
     
     This will add the ``SomeModelThatPointsToUs`` and
@@ -56,17 +55,10 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
         
         children should be set to a list of models that are child nodes of the
         model class that this admin class makes editable:
-            
-    .. attribute:: invisible_in_admin
-    
-        The :class:`~django_admin_link_inline.tree.admin.relation.ForeignKeyAwareModelAdmin` will not
-        be shown in the admin listing if this value is ``True``.
-        The default is ``True``.
-    
+
     """
     change_form_template = 'tree/admin/change_form_with_related_links.html'
     
-    invisible_in_admin = True
     auto_aware = True
     _children = None
     
@@ -98,11 +90,6 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
         js = (
             'adminlinkinline/js/adminoverride.js',
         )
-
-    def get_model_perms(self, request):
-        perms = super(ForeignKeyAwareModelAdmin, self).get_model_perms(request)
-        perms['invisible_in_admin'] = self.invisible_in_admin
-        return perms
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
         inline_links = {}
@@ -191,13 +178,7 @@ class InvisibleModelAdmin(admin.ModelAdmin):
         parent.
     """
     change_form_template = 'tree/admin/change_form_with_parent_link.html'
-    invisible_in_admin = True
 
-    def get_model_perms(self, request):
-        perms = super(InvisibleModelAdmin, self).get_model_perms(request)
-        perms['invisible_in_admin'] = self.invisible_in_admin
-        return perms
-        
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         # retrieve link to parent for breadcrumb path
