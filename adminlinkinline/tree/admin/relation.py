@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-from django.forms.models import  modelformset_factory
+from django.forms.models import modelformset_factory
 from django.core import urlresolvers
 from django.utils.encoding import force_unicode
 
@@ -22,10 +22,18 @@ class _CanFindParentLink(object):
             parent_name = parent
             parent_id = str(parent_link.field.value_from_object(instance))
 
-            info = (self.admin_site.name, parent._meta.app_label, parent_type_name)
+            info = (self.admin_site.name,
+                    parent._meta.app_label,
+                    parent_type_name)
 
-            parent_link_data['parent_model'] = urlresolvers.reverse("%s:%s_%s_change" % info, args=[parent_id])
-            parent_link_data['parent_name'] = "%s %s" % (force_unicode(parent._meta.verbose_name), parent_name)
+            parent_link_data['parent_model'] = urlresolvers.reverse(
+                "%s:%s_%s_change" % info,
+                args=[parent_id]
+            )
+            parent_link_data['parent_name'] = "%s %s" % (
+                force_unicode(parent._meta.verbose_name),
+                parent_name
+            )
         
         return parent_link_data
 
@@ -48,12 +56,13 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         
         admin.site.register(SomeModelWithLotsOfRelations, SomeAdmin)
     
-    This will add the ``SomeModelThatPointsToUs`` and ``AnotherModelThatPointsTous`` to
-    the ``SomeModelWithLotsOfRelations`` admin interface and you can add these children
-    or edit them there.
+    This will add the ``SomeModelThatPointsToUs`` and
+    ``AnotherModelThatPointsTous`` to the ``SomeModelWithLotsOfRelations``
+    admin interface and you can add these children or edit them there.
     
-    See :class:`InvisibleModelAdmin` if you want to hide the admin interface for ``SomeModelThatPointsToUs``
-    and ``AnotherModelThatPointsTous`` admin interface from the admin listing.
+    See :class:`InvisibleModelAdmin` if you want to hide the admin interface
+    for ``SomeModelThatPointsToUs`` and ``AnotherModelThatPointsTous``
+    admin interface from the admin listing.
     
     .. attribute:: auto_aware
     
@@ -67,20 +76,22 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         and make the save button return to the parent instead of the app listing, the
         ``parent_link`` should be set.
         
-        It must be set to the *name* of the ``ForeignKey`` that points to the parent.
+        It must be set to the *name* of the ``ForeignKey`` that points to the
+        parent.
     
     .. attribute:: children
         
-        If the order of the children should be changed or not all children should be
-        displayed, you can specify the children manually.
+        If the order of the children should be changed or not all children
+        should be displayed, you can specify the children manually.
         
-        children should be set to a list of models that are child nodes of the model
-        class that this admin class makes editable:
+        children should be set to a list of models that are child nodes of the
+        model class that this admin class makes editable:
             
     .. attribute:: invisible_in_admin
     
         The :class:`~django_admin_link_inline.tree.admin.relation.ForeignKeyAwareModelAdmin` will not
-        be shown in the admin listing if this value is ``True``. The default is ``True``.
+        be shown in the admin listing if this value is ``True``.
+        The default is ``True``.
     
     """
     change_form_template = 'tree/admin/change_form_with_related_links.html'
@@ -94,7 +105,10 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
     @property
     def _descriptor_cache(self):
         if self._real_descriptor_cache is None:
-            self._real_descriptor_cache = dict([(x[1].related.model, x[0]) for x in get_foreign_key_desciptors(self.model)])
+            self._real_descriptor_cache = dict(
+                [(x[1].related.model, x[0])
+                 for x in get_foreign_key_desciptors(self.model)]
+            )
         return self._real_descriptor_cache 
 
     @property
@@ -129,7 +143,9 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         if extra_context:
             inline_links.update(extra_context)
             
-        return super(ForeignKeyAwareModelAdmin, self).change_view(request, object_id, form_url, inline_links)
+        return super(ForeignKeyAwareModelAdmin, self).change_view(
+            request, object_id, form_url, inline_links
+        )
 
     def extra_forms(self, object_id):
 
@@ -138,7 +154,10 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         extra_formsets = []
 
         for child in self.children:
-            factory = modelformset_factory(child, extra=0, fields=['id'], formset=VisiblePrimaryKeyFormset)
+            factory = modelformset_factory(child,
+                                           extra=0,
+                                           fields=['id'],
+                                           formset=VisiblePrimaryKeyFormset)
             descriptor_name = self._descriptor_cache[child]
             descriptor = getattr(instance, descriptor_name)
             
@@ -153,7 +172,9 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
                 field_name = instance._meta.object_name.lower()
             
             # find url for the + button
-            url_descriptor = (self.admin_site.name, child._meta.app_label, child._meta.object_name.lower())
+            url_descriptor = (self.admin_site.name,
+                              child._meta.app_label,
+                              child._meta.object_name.lower())
             url_pattern = '%s:%s_%s_add' % url_descriptor
             url = urlresolvers.reverse(url_pattern)
                 
@@ -163,7 +184,7 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
             form.title = child._meta.verbose_name_plural
             form.addurl = "%s?%s=%s" % (url, field_name, object_id)
             
-            extra_formsets.append( form )            
+            extra_formsets.append(form)
 
         return extra_formsets
         
@@ -173,8 +194,8 @@ class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
     An admin class that can be used as admin for children
     of :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
     
-    This way they will be hidden in 
-    the admin interface so they can only be accessed via ``ForeignKeyAwareModelAdmin``.
+    This way they will be hidden in the admin interface
+    so they can only be accessed via ``ForeignKeyAwareModelAdmin``.
     usage::
         
         from django.db import models
@@ -193,12 +214,13 @@ class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         
     .. attribute:: parent_link
         
-        When :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin` is used, it is nolonger
-        displayed in the admin listing as an editable model. To have sane breadcrumbs
-        and make the save button return to the parent instead of the app listing, the
-        ``parent_link`` should be set.
+        When :class:`~adminlinkinline.tree.admin.relation.InvisibleModelAdmin`
+        is used, it is no longer displayed in the admin listing as an editable
+        model. To have sane breadcrumbs and make the save button return to the
+        parent instead of the app listing, the ``parent_link`` should be set.
         
-        It must be set to the *name* of the ``ForeignKey`` that points to the parent.
+        It must be set to the *name* of the ``ForeignKey`` that points to the
+        parent.
     """
     change_form_template = 'tree/admin/change_form_with_parent_link.html'
     invisible_in_admin = True
@@ -216,7 +238,9 @@ class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         if extra_context:
             defaults.update(extra_context)
         
-        response = super(InvisibleModelAdmin, self).change_view(request, object_id, form_url, defaults)
+        response = super(InvisibleModelAdmin, self).change_view(
+            request, object_id, form_url, defaults
+        )
         if response.get('Location', False) == '../':
             return HttpResponseRedirect(defaults.get('parent_model', '../'))
             
