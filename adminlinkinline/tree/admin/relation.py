@@ -142,9 +142,18 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
             extra_formsets.append(form)
 
         return extra_formsets
-        
 
-class InvisibleModelAdmin(admin.ModelAdmin):
+
+class InvisibleModelMixin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        http://stackoverflow.com/a/4871511
+        """
+        return {}
+
+
+class InvisibleModelAdmin(InvisibleModelMixin):
     """
     An admin class that can be used as admin for children
     of :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
