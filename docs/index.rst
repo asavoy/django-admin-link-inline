@@ -33,12 +33,6 @@ Which, if the version was v0.1.0 would become http://github.com/asavoy/django-ad
 Requirements
 ============
 
-AdminLinkInline requires python 2.6, furthermore the following packages must be installed:
+AdminLinkInline requires python 2.7, furthermore the following packages must be installed:
 
 - Django
-
-The following packages might also be required, depending on what features you
-are using.
-
-- polib
-- django-reversion

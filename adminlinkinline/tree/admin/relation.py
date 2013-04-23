@@ -5,22 +5,15 @@ If you want to use :class:`InvisibleModelAdmin` make sure django_amdin_link_inli
 ``django.contrib.admin`` in the ``INSTALLED_APPS`` because it has to
 override admin/index.html to make it work.
 """
+from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.forms.models import  modelformset_factory
 from django.core import urlresolvers
-from django.conf import settings
 from django.utils.encoding import force_unicode
 
 from adminlinkinline.tree.introspection import get_foreign_key_desciptors
 from adminlinkinline.tree.admin.formsets import VisiblePrimaryKeyFormset
 
-
-if 'reversion' in settings.INSTALLED_APPS:
-    from reversion.admin import VersionAdmin
-    AdminBase = VersionAdmin
-else:
-    from django.contrib import admin
-    AdminBase = admin.ModelAdmin
 
 class _CanFindParentLink(object):
     """Adds function to find a link to a parent model"""
@@ -44,7 +37,7 @@ class _CanFindParentLink(object):
         return parent_link_data
 
 
-class ForeignKeyAwareModelAdmin(AdminBase, _CanFindParentLink):
+class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
     """
     An admin class that display links to related items.
     
@@ -182,8 +175,7 @@ class ForeignKeyAwareModelAdmin(AdminBase, _CanFindParentLink):
         return extra_formsets
         
 
-
-class InvisibleModelAdmin(AdminBase, _CanFindParentLink):
+class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
     """
     An admin class that can be used as admin for children
     of :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
