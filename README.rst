@@ -2,7 +2,10 @@ AdminLinkInline
 ====================================================================
 
 AdminLinkInline allows related models to be linked in with
-parent models in the admin section of Django applications
+parent models in the admin section of Django applications.
+
+It began life as a fork of easymode:
+https://github.com/specialunderwear/django-easymode
 
 License
 -------
