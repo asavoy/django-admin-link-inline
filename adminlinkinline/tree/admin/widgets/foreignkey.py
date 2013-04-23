@@ -7,7 +7,6 @@ from django.core import urlresolvers
 from django.template.loader import render_to_string
 from django.utils.encoding import force_unicode
 
-__all__ = ('RenderLink')
 
 class RenderLink(forms.Widget):
     """
