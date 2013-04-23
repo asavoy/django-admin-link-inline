@@ -1,10 +1,3 @@
-"""
-Contains a modeladmin class that shows links to all related items in its change_view.
-
-If you want to use :class:`InvisibleModelAdmin` make sure django_amdin_link_inline comes before
-``django.contrib.admin`` in the ``INSTALLED_APPS`` because it has to
-override admin/index.html to make it work.
-"""
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.forms.models import  modelformset_factory
