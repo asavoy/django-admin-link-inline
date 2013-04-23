@@ -191,25 +191,30 @@ class InvisibleModelAdmin(InvisibleModelMixin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         # retrieve link to parent for breadcrumb path
-        defaults = self._get_parent_link(object_id)
+        defaults = self._get_parent_link(self.model.objects.get(pk=object_id))
 
         if extra_context:
             defaults.update(extra_context)
 
-        response = super(InvisibleModelAdmin, self).change_view(
+        return super(InvisibleModelAdmin, self).change_view(
             request, object_id, form_url, defaults
         )
-        if request.POST and request.POST.get('_save'):
-            # If (and only if) user clicked 'Save', redirect to parent model
-            return HttpResponseRedirect(defaults.get('parent_model_url', '../'))
-            
-        return response
 
-    def _get_parent_link(self, object_id):
+    def response_change(self, request, obj):
+        """
+        If (and only if) user clicked 'Save', redirect to parent model
+        """
+        if '_save' in request.POST:
+            parent = self._get_parent_link(obj)
+            return HttpResponseRedirect(parent.get('parent_model_url', '../'))
+
+        return super(InvisibleModelAdmin, self).response_change(request, obj)
+
+    def _get_parent_link(self, obj=None):
         parent_link_data = {}
         if hasattr(self, 'parent_link'):
             parent_link = getattr(self.model, self.parent_link)
-            instance = self.model.objects.get(pk=object_id)
+            instance = obj
 
             parent = parent_link.__get__(instance)
             parent_type_name = parent._meta.object_name.lower()
