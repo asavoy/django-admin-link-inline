@@ -38,7 +38,7 @@ class _CanFindParentLink(object):
         return parent_link_data
 
 
-class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
+class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
     """
     An admin class that display links to related items.
     
@@ -133,13 +133,11 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin, _CanFindParentLink):
         perms = super(ForeignKeyAwareModelAdmin, self).get_model_perms(request)
         perms['invisible_in_admin'] = self.invisible_in_admin
         return perms
-        
+
     def change_view(self, request, object_id, form_url='', extra_context=None):
         inline_links = {}
         inline_links['extra_forms'] = self.extra_forms(object_id)
 
-        # retrieve link to parent for breadcrumb path
-        inline_links.update(self._get_parent_link(object_id))
         if extra_context:
             inline_links.update(extra_context)
             
