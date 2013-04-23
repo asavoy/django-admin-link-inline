@@ -195,11 +195,12 @@ class InvisibleModelAdmin(InvisibleModelMixin):
 
         if extra_context:
             defaults.update(extra_context)
-        
+
         response = super(InvisibleModelAdmin, self).change_view(
             request, object_id, form_url, defaults
         )
-        if response.get('Location', False) == '../':
+        if request.POST and request.POST.get('_save'):
+            # If (and only if) user clicked 'Save', redirect to parent model
             return HttpResponseRedirect(defaults.get('parent_model', '../'))
             
         return response
