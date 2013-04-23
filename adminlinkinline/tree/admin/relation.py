@@ -8,36 +8,6 @@ from adminlinkinline.tree.introspection import get_foreign_key_desciptors
 from adminlinkinline.tree.admin.formsets import VisiblePrimaryKeyFormset
 
 
-class _CanFindParentLink(object):
-    """Adds function to find a link to a parent model"""
-        
-    def _get_parent_link(self, object_id):
-        parent_link_data = {}
-        if hasattr(self, 'parent_link'):
-            parent_link = getattr(self.model, self.parent_link)
-            instance = self.model.objects.get(pk=object_id)
-
-            parent = parent_link.__get__(instance)
-            parent_type_name = parent._meta.object_name.lower()
-            parent_name = parent
-            parent_id = str(parent_link.field.value_from_object(instance))
-
-            info = (self.admin_site.name,
-                    parent._meta.app_label,
-                    parent_type_name)
-
-            parent_link_data['parent_model'] = urlresolvers.reverse(
-                "%s:%s_%s_change" % info,
-                args=[parent_id]
-            )
-            parent_link_data['parent_name'] = "%s %s" % (
-                force_unicode(parent._meta.verbose_name),
-                parent_name
-            )
-        
-        return parent_link_data
-
-
 class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
     """
     An admin class that display links to related items.
@@ -187,7 +157,7 @@ class ForeignKeyAwareModelAdmin(admin.ModelAdmin):
         return extra_formsets
         
 
-class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
+class InvisibleModelAdmin(admin.ModelAdmin):
     """
     An admin class that can be used as admin for children
     of :class:`~adminlinkinline.tree.admin.relation.ForeignKeyAwareModelAdmin`.
@@ -243,3 +213,29 @@ class InvisibleModelAdmin(admin.ModelAdmin, _CanFindParentLink):
             return HttpResponseRedirect(defaults.get('parent_model', '../'))
             
         return response
+
+    def _get_parent_link(self, object_id):
+        parent_link_data = {}
+        if hasattr(self, 'parent_link'):
+            parent_link = getattr(self.model, self.parent_link)
+            instance = self.model.objects.get(pk=object_id)
+
+            parent = parent_link.__get__(instance)
+            parent_type_name = parent._meta.object_name.lower()
+            parent_name = parent
+            parent_id = str(parent_link.field.value_from_object(instance))
+
+            info = (self.admin_site.name,
+                    parent._meta.app_label,
+                    parent_type_name)
+
+            parent_link_data['parent_model'] = urlresolvers.reverse(
+                "%s:%s_%s_change" % info,
+                args=[parent_id]
+            )
+            parent_link_data['parent_name'] = "%s %s" % (
+                force_unicode(parent._meta.verbose_name),
+                parent_name
+            )
+
+        return parent_link_data
