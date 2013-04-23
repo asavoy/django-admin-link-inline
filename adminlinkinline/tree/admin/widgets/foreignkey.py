@@ -3,13 +3,9 @@ Contains widgets that can be used for admin models
 with related items.
 """
 from django import forms
-from django.conf import settings
 from django.core import urlresolvers
-from django.forms import widgets
 from django.template.loader import render_to_string
 from django.utils.encoding import force_unicode
-from django.utils.html import mark_safe
-from django.utils.translation import ugettext
 
 __all__ = ('RenderLink')
 
