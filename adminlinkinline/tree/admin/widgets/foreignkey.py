@@ -4,8 +4,9 @@ with related items.
 """
 from django import forms
 from django.core import urlresolvers
-from django.template.loader import render_to_string
 from django.utils.encoding import force_unicode
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 
 
 class RenderLink(forms.Widget):
@@ -33,4 +34,7 @@ class RenderLink(forms.Widget):
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             final_attrs['value'] = force_unicode(value)
-        return render_to_string('tree/admin/widgets/foreignkeylink.html', locals())
+        return mark_safe(
+            '<a href="%s">%s</a><br>' % (
+            escape(url), escape(label)
+            ))
