@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.forms.models import modelformset_factory
 from django.core import urlresolvers
 from django.utils.encoding import force_unicode
+from django.utils.translation import ugettext_lazy as _
 
 from adminlinkinline.tree.introspection import get_foreign_key_desciptors
 from adminlinkinline.tree.admin.formsets import VisiblePrimaryKeyFormset
@@ -207,7 +208,16 @@ class InvisibleModelAdmin(InvisibleModelMixin):
         """
         If (and only if) user clicked 'Save', redirect to parent model
         """
+        opts = obj._meta
+        verbose_name = opts.verbose_name
+        parent_msg = _("You've been redirected to the parent object.")
+        lookups = {
+            'name': force_unicode(verbose_name), 'obj': force_unicode(obj)
+        }
         if '_save' in request.POST:
+            msg = parent_msg + ' ' + _(
+                'The %(name)s "%(obj)s" was changed successfully.') % lookups
+            self.message_user(request, msg)
             parent = self._get_parent_link(obj)
             return HttpResponseRedirect(parent.get('parent_model_url', '../'))
 
