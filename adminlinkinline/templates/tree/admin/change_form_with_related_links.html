@@ -15,7 +15,10 @@
         </div>
         {% endfor %}
         {% if has_add_permission %}
-        &nbsp;&nbsp;<a href="{{ formset.addurl }}" onclick="return showAddAnotherPopup(this);"><img src="{% admin_media_prefix %}img/icon_addlink.gif" width="10" height="10" alt="add another"/></a>
+        &nbsp;&nbsp;
+            <a href="{{ formset.addurl }}" onclick="return showAddAnotherPopup(this);">
+                <img src="{% admin_media_prefix %}img/icon_addlink.gif" width="10" height="10" alt="add another"/>
+            </a>
         {% endif %}
     {% endfor %}
     
