@@ -190,6 +190,8 @@ class InvisibleModelAdmin(InvisibleModelMixin):
     # TODO: Consider overriding ModelAdmin.add_view()
     # ...   to fix the "Save and add another" button
 
+    # TODO: Delete on a child model should redirect to the parent model
+
     change_form_template = 'tree/admin/change_form_with_parent_link.html'
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
