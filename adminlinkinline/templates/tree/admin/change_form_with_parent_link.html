@@ -1,15 +1,22 @@
 {% extends "admin/change_form.html" %}
 {% load i18n admin_modify adminmedia %}
 
+
 {% block breadcrumbs %}{% if not is_popup %}
 <div class="breadcrumbs">
-     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
-     <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo; 
-     {% if parent_model_url %}
-     <a href="{{ parent_model_url }}">{{ parent_name|capfirst|escape }}</a> &rsaquo;
-     {% else %}
-         {% if has_change_permission %}<a href="../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo; 
-     {% endif %}     
-     {% if add %}{% trans "Add" %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+    <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+    <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo;
+    {% if parent_model_url %}
+        <a href="{{ parent_model_url }}">{{ parent_name|capfirst|escape}}</a>
+    {% elif has_change_permission %}
+        <a href="../">{{ opts.verbose_name_plural|capfirst }}</a>
+    {% else %}
+        {{ opts.verbose_name_plural|capfirst }}
+    {% endif %} &rsaquo;
+    {% if add %}
+        {% trans "Add" %} {{ opts.verbose_name }}
+    {% else %}
+        {{ original|truncatewords:"18" }}
+    {% endif %}
 </div>
 {% endif %}{% endblock %}
