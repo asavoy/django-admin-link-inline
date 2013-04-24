@@ -229,12 +229,10 @@ class InvisibleModelAdmin(InvisibleModelMixin):
         parent_link_data = {}
         if hasattr(self, 'parent_link'):
             parent_link = getattr(self.model, self.parent_link)
-            instance = obj
 
-            parent = parent_link.__get__(instance)
+            parent = parent_link.__get__(obj)
             parent_type_name = parent._meta.object_name.lower()
-            parent_name = parent
-            parent_id = str(parent_link.field.value_from_object(instance))
+            parent_id = str(parent_link.field.value_from_object(obj))
 
             info = (self.admin_site.name,
                     parent._meta.app_label,
@@ -246,7 +244,7 @@ class InvisibleModelAdmin(InvisibleModelMixin):
             )
             parent_link_data['parent_name'] = "%s %s" % (
                 force_unicode(parent._meta.verbose_name),
-                parent_name
+                parent
             )
 
         return parent_link_data
