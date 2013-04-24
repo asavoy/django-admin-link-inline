@@ -186,6 +186,9 @@ class InvisibleModelAdmin(InvisibleModelMixin):
         It must be set to the *name* of the ``ForeignKey`` that points to the
         parent.
     """
+    # TODO: Consider overriding ModelAdmin.add_view()
+    # ...   to fix the "Save and add another" button
+
     change_form_template = 'tree/admin/change_form_with_parent_link.html'
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
