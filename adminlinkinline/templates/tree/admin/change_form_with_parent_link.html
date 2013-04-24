@@ -5,8 +5,8 @@
 <div class="breadcrumbs">
      <a href="../../../">{% trans "Home" %}</a> &rsaquo;
      <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo; 
-     {% if parent_model %}
-     <a href="{{ parent_model }}">{{ parent_name|capfirst|escape }}</a> &rsaquo; 
+     {% if parent_model_url %}
+     <a href="{{ parent_model_url }}">{{ parent_name|capfirst|escape }}</a> &rsaquo;
      {% else %}
          {% if has_change_permission %}<a href="../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo; 
      {% endif %}     

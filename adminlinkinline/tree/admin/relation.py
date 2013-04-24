@@ -201,7 +201,7 @@ class InvisibleModelAdmin(InvisibleModelMixin):
         )
         if request.POST and request.POST.get('_save'):
             # If (and only if) user clicked 'Save', redirect to parent model
-            return HttpResponseRedirect(defaults.get('parent_model', '../'))
+            return HttpResponseRedirect(defaults.get('parent_model_url', '../'))
             
         return response
 
@@ -220,7 +220,7 @@ class InvisibleModelAdmin(InvisibleModelMixin):
                     parent._meta.app_label,
                     parent_type_name)
 
-            parent_link_data['parent_model'] = urlresolvers.reverse(
+            parent_link_data['parent_model_url'] = urlresolvers.reverse(
                 "%s:%s_%s_change" % info,
                 args=[parent_id]
             )
